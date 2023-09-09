@@ -8,6 +8,7 @@ import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 import { IBook } from "../types/book";
 import Pagination from "../components/Pagination";
+import TooManyItemsModal from "../components/TooManyItemsModal";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ const Home = () => {
   const { refresher } = useContext(homeContext);
   const [books, setBooks] = useState<IBook[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showTooManyChildrenModal, setShowTooManyChildrenModal] =
+    useState(false);
   const [error, setError] = useState("");
   const [itemsToShow, setItemsToShow] = useState<IBook[]>([]);
 
@@ -40,7 +43,6 @@ const Home = () => {
       setView("cardGrid");
     }
   }, [breakPoint.sm, isLoading]);
-
   useEffect(() => {
     getBooks()
       .then((res) => setBooks(res.data))
@@ -69,29 +71,36 @@ const Home = () => {
     !isLoading && (
       <div className="min-h-screen w-full">
         <div className=" text-white  p-4 mx-4 rounded-md shadow-md shadow-black">
-          {!breakPoint.sm && (
-            <div className="flex flex-row gap-2 items-center justify-center mb-6 text-4xl">
-              <button
-                className="bg-slate-800 text-white px-4 py-2 rounded-sm"
-                onClick={() => setView("table")}
-              >
-                table
-              </button>
-              <button
-                className="bg-slate-800 text-white px-4 py-2 rounded-sm"
-                onClick={() => setView("cardGrid")}
-              >
-                card
-              </button>
-            </div>
-          )}
+          <div className="flex flex-row gap-2 items-center justify-center mb-6 text-4xl">
+            <button
+              className="bg-slate-800 text-white px-4 py-2 rounded-sm"
+              onClick={() => setView("table")}
+            >
+              table
+            </button>
+            <button
+              className="bg-slate-800 text-white px-4 py-2 rounded-sm"
+              onClick={() => setView("cardGrid")}
+            >
+              card
+            </button>
+          </div>
 
           <div className="flex flex-row mb-2">
             <p className=" text-white flex-1 text-lg font-bold">Books:</p>
             <PlusCircleIcon
               className="h-8 w-8 text-white cursor-pointer"
-              onClick={() => navigate("/books/create")}
+              onClick={() => {
+                books.length >= 10
+                  ? setShowTooManyChildrenModal(true)
+                  : navigate("/books/create");
+              }}
             />
+            {showTooManyChildrenModal && (
+              <TooManyItemsModal
+                onClose={() => setShowTooManyChildrenModal(false)}
+              />
+            )}
           </div>
           <div>
             <div className=" min-h-[650px]">
