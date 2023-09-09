@@ -39,7 +39,7 @@ const Home = () => {
     if (breakPoint.sm && !isLoading) {
       setView("cardGrid");
     }
-  }, [breakPoint.sm]);
+  }, [breakPoint.sm, isLoading]);
 
   useEffect(() => {
     getBooks()
