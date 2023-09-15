@@ -25,7 +25,7 @@ const DeleteModal = ({ onClose, id }: DeleteModalProps) => {
   };
   return (
     <div className="bg-[#00000069] flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-      <div className="relative w-auto my-6 mx-auto max-w-3xl">
+      <div className="relative w-auto m-10  max-w-3xl">
         <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
           <div className="p-8 lex flex-col gap-2 relative">
             <XMarkIcon

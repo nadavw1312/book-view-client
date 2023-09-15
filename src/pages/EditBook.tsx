@@ -4,6 +4,7 @@ import { IBookCreate } from "../types/book";
 import { getBook, updateBook } from "../api";
 import { useEffect, useState } from "react";
 import FormPage from "../components/layout/FormPage";
+import PageLoader from "../components/PageLoader";
 
 const EditBook = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const EditBook = () => {
   };
 
   if (isLoading) {
-    return <span>Loading...</span>;
+    return <PageLoader />;
   }
 
   return (

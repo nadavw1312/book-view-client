@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { IBook } from "../types/book";
 import Pagination from "../components/Pagination";
 import TooManyItemsModal from "../components/TooManyItemsModal";
+import { ThreeDots } from "react-loader-spinner";
+import PageLoader from "../components/PageLoader";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -22,12 +24,16 @@ const Home = () => {
   const [error, setError] = useState("");
   const [itemsToShow, setItemsToShow] = useState<IBook[]>([]);
 
-  useEffect(() => {
-    setIsLoading(true);
+  const loadBooks = () => {
     getBooks()
       .then((res) => setBooks(res.data))
       .catch((err) => setError(err))
       .finally(() => setIsLoading(false));
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    loadBooks();
   }, []);
 
   useEffect(() => {
@@ -44,10 +50,7 @@ const Home = () => {
     }
   }, [breakPoint.sm, isLoading]);
   useEffect(() => {
-    getBooks()
-      .then((res) => setBooks(res.data))
-      .catch((err) => setError(err))
-      .finally(() => setIsLoading(false));
+    loadBooks();
   }, [refresher]);
 
   useEffect(() => {
@@ -60,7 +63,7 @@ const Home = () => {
   };
 
   if (isLoading) {
-    return <span>Loading...</span>;
+    return <PageLoader />;
   }
 
   if (error) {
@@ -91,7 +94,7 @@ const Home = () => {
             <PlusCircleIcon
               className="h-8 w-8 text-white cursor-pointer"
               onClick={() => {
-                books.length >= 10
+                books.length >= 50
                   ? setShowTooManyChildrenModal(true)
                   : navigate("/books/create");
               }}
@@ -103,7 +106,7 @@ const Home = () => {
             )}
           </div>
           <div>
-            <div className=" min-h-[650px]">
+            <div className=" min-h-[650px] overflow-auto">
               {view === "table" ? (
                 <BooksTable books={itemsToShow} />
               ) : (
