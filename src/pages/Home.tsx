@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { IBook } from "../types/book";
 import Pagination from "../components/Pagination";
 import TooManyItemsModal from "../components/TooManyItemsModal";
-import { ThreeDots } from "react-loader-spinner";
 import PageLoader from "../components/PageLoader";
 
 const Home = () => {
